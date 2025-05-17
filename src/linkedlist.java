@@ -26,4 +26,14 @@ public class linkedlist {
             temp = temp.next;
         }
     }
+
+    public int count() {
+        int count = 0;
+        Node temp = head;
+        while (temp != null) {
+            count++;
+            temp = temp.next;
+        }
+        return count;
+    }
 }
