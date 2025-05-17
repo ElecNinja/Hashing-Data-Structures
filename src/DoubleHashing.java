@@ -1,4 +1,4 @@
-ublic class DoubleHashing {
+public class DoubleHashing {
     public static final int DEFAULT_CAPACITY = 53;
     public final int capacity;
     public final String[] table;
@@ -6,21 +6,22 @@ ublic class DoubleHashing {
     public int size;
     public int collisions;
 
-    public DoubleHashing(int capacity, String[] table, boolean[] isDeleted) {
+    public DoubleHashing(int capacity) {
         this.capacity = capacity;
-        this.table = table;
-        this.isDeleted = isDeleted;
+        this.table = new String[capacity];
+        this.isDeleted = new boolean[capacity];
+        this.size = 0;
+        this.collisions = 0;
     }
 
-
-    // Hash function 1: main hash
     public int hashFun1(String key) {
-        return HashUtils.hash(key, capacity);
+        return Math.abs(key.hashCode()) % capacity;
     }
 
-    // Hash function 2: step size for probing
+    
     public int hashFun2(String key) {
-        return capacity - (Math.abs(key.hashCode()) % capacity);
+        int h = Math.abs(key.hashCode());
+        return 97 * (h % 97);
     }
 
     // Insert element into the hash table
@@ -30,16 +31,17 @@ ublic class DoubleHashing {
             return;
         }
 
-        int index = hashFun1(key);
-        int step = hashFun2(key);
+        int h1 = hashFun1(key);
+        int h2 = hashFun2(key);
+        int index = h1;
         int i = 1;
 
         while (table[index] != null && !isDeleted[index]) {
             if (table[index].equals(key)) {
-                return; 
+                return; // Key already exists
             }
             collisions++;
-            index = (index + i * step) % capacity;
+            index = (h1 + i * h2) % capacity; // Standard double hashing formula
             i++;
         }
 
@@ -50,8 +52,7 @@ ublic class DoubleHashing {
 
     // Check if key exists
     public boolean isContains(String key) {
-        int index = findIndex(key);
-        return index != -1;
+        return findIndex(key) != -1;
     }
 
     // Delete an element
@@ -65,28 +66,26 @@ ublic class DoubleHashing {
 
     // Internal: find index of a key
     public int findIndex(String key) {
-        int index = hashFun1(key);
-        int step = hashFun2(key);
+        int h1 = hashFun1(key);
+        int h2 = hashFun2(key);
+        int index = h1;
         int i = 1;
 
         while (table[index] != null) {
             if (!isDeleted[index] && table[index].equals(key)) {
                 return index;
             }
-            index = (index + i * step) % capacity;
+            index = (h1 + i * h2) % capacity;
             i++;
         }
         return -1;
     }
 
-    // Optional: Get number of collisions
     public int getCollisions() {
         return collisions;
     }
 
-    // Optional: Get current size
     public int getSize() {
         return size;
     }
 }
-
