@@ -5,6 +5,16 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         int tableSize = 97;
+       try{
+           Scanner scanner = new Scanner(System.in);
+           System.out.println("Enter the size of the hash table (default is 97): ");
+           String input = scanner.nextLine();
+              if (!input.isEmpty()) {
+                tableSize = Integer.parseInt(input);
+              }
+         } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Using default size of 97.");
+       }
 
         List<String> words = readWordsFromFile("words.txt");
 

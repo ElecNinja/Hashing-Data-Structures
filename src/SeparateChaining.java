@@ -21,9 +21,10 @@ public class SeparateChaining {
                 System.out.println("Collision at " + i + " for " + key);
                 table[i].insertAtEnd(key);
                 System.out.println("Inserted " + key + " at index " + i + " in position " + posInChain + " of the chain");
+            } else {
+                table[i].insertAtEnd(key);
+                System.out.println("Inserted " + key + " at index " + i);
             }
-            table[i].insertAtEnd(key);
-            System.out.println("Inserted " + key + " at index " + i);
 
         }
     public int getCollisionCount () {
