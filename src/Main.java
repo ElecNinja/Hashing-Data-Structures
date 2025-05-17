@@ -17,20 +17,23 @@ public class Main {
         String[] doubleTable = new String[tableSize];
         int[] doubleCollisions = new int[tableSize];
 
-        String[] separateTable = new String[tableSize];
-        int[] separateCollisions = new int[tableSize];
-
         System.out.println("===== Linear Probing =====");
         LinearProbing.hashing(linearTable, words, linearCollisions);
+        System.out.println("==== Hashing Table ====");
         printTable(linearTable, linearCollisions);
+        System.out.println("Collisions in Linear Probing: " + Arrays.stream(linearCollisions).sum() + "\n");
 
         System.out.println("\n===== Quadratic Probing =====");
         QuadraticProbing.hashing(quadraticTable, words, quadraticCollisions);
+        System.out.println("==== Hashing Table ====");
         printTable(quadraticTable, quadraticCollisions);
+        System.out.println("Collisions in Quadratic Probing: " + Arrays.stream(quadraticCollisions).sum() + "\n");
 
         System.out.println("\n===== Double Hashing =====");
         DoubleHashing.hashing(doubleTable, words, doubleCollisions);
+        System.out.println("==== Hashing Table ====");
         printTable(doubleTable, doubleCollisions);
+        System.out.println("Collisions in Double Hashing: " + Arrays.stream(doubleCollisions).sum() + "\n");
 
         System.out.println("\n===== Separate Chaining =====");
         SeparateChaining separate = new SeparateChaining(tableSize);
@@ -44,7 +47,7 @@ public class Main {
                 System.out.println();
             }
         }
-        System.out.println("Total Collisions: " + separate.getCollisionCount());
+        System.out.println("Total Collisions in Separate Chaining: " + separate.getCollisionCount());
 
     }
 

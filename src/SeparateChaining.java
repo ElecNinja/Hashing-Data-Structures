@@ -14,10 +14,17 @@ public class SeparateChaining {
     }
         public void insert(String key){
             int i = HashUtils.hash(key, size);
+            int posInChain = table[i].count() + 1;
+            System.out.println("Hash of " + key + " = " + i);
             if(!table[i].isEmpty()){
                 collisionCount++;
+                System.out.println("Collision at " + i + " for " + key);
+                table[i].insertAtEnd(key);
+                System.out.println("Inserted " + key + " at index " + i + " in position " + posInChain + " of the chain");
             }
             table[i].insertAtEnd(key);
+            System.out.println("Inserted " + key + " at index " + i);
+
         }
     public int getCollisionCount () {
         return collisionCount;
