@@ -15,13 +15,13 @@ public class DoubleHashing {
     }
 
     public int hashFun1(String key) {
-        return Math.abs(key.hashCode()) % capacity;
+        return HashUtils.hash(key, capacity);
     }
 
-    
     public int hashFun2(String key) {
         int h = Math.abs(key.hashCode());
-        return 97 * (h % 97);
+        int step = 97 * (h % 97);
+        return step == 0 ? 1 : step; 
     }
 
     // Insert element into the hash table
@@ -41,7 +41,7 @@ public class DoubleHashing {
                 return; // Key already exists
             }
             collisions++;
-            index = (h1 + i * h2) % capacity; // Standard double hashing formula
+            index = (h1 + i * h2) % capacity;
             i++;
         }
 
@@ -64,7 +64,7 @@ public class DoubleHashing {
         }
     }
 
-    // Internal: find index of a key
+    // Find index of a key
     public int findIndex(String key) {
         int h1 = hashFun1(key);
         int h2 = hashFun2(key);
