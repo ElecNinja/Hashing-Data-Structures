@@ -1,91 +1,32 @@
+import java.util.List;
+
 public class DoubleHashing {
-    public static final int DEFAULT_CAPACITY = 53;
-    public final int capacity;
-    public final String[] table;
-    public final boolean[] isDeleted;
-    public int size;
-    public int collisions;
+    static void hashing(String[] table, List<String> arr, int[] collisions) {
+        int tsize = table.length;
 
-    public DoubleHashing(int capacity) {
-        this.capacity = capacity;
-        this.table = new String[capacity];
-        this.isDeleted = new boolean[capacity];
-        this.size = 0;
-        this.collisions = 0;
-    }
+        for (String value : arr) {
+            int h1 = HashUtils.hash(value, tsize);
+            int h2 = secondHash(value, tsize);
+            if (h2 == 0) h2 = 1; // avoid zero step
 
-    public int hashFun1(String key) {
-        return HashUtils.hash(key, capacity);
-    }
-
-    public int hashFun2(String key) {
-        int h = Math.abs(key.hashCode());
-        int step = 97 * (h % 97);
-        return step == 0 ? 1 : step; 
-    }
-
-    // Insert element into the hash table
-    public void insert(String key) {
-        if (size >= capacity) {
-            System.out.println("Table is full");
-            return;
-        }
-
-        int h1 = hashFun1(key);
-        int h2 = hashFun2(key);
-        int index = h1;
-        int i = 1;
-
-        while (table[index] != null && !isDeleted[index]) {
-            if (table[index].equals(key)) {
-                return; // Key already exists
+            if (table[h1] == null) {
+                table[h1] = value;
+                collisions[h1] = 0;
+            } else {
+                for (int i = 1; i < tsize; i++) {
+                    int idx = (h1 + i * h2) % tsize;
+                    if (table[idx] == null) {
+                        table[idx] = value;
+                        collisions[idx] = i;
+                        break;
+                    }
+                }
             }
-            collisions++;
-            index = (h1 + i * h2) % capacity;
-            i++;
-        }
-
-        table[index] = key;
-        isDeleted[index] = false;
-        size++;
-    }
-
-    // Check if key exists
-    public boolean isContains(String key) {
-        return findIndex(key) != -1;
-    }
-
-    // Delete an element
-    public void delete(String key) {
-        int index = findIndex(key);
-        if (index != -1) {
-            isDeleted[index] = true;
-            size--;
         }
     }
 
-    // Find index of a key
-    public int findIndex(String key) {
-        int h1 = hashFun1(key);
-        int h2 = hashFun2(key);
-        int index = h1;
-        int i = 1;
-
-        while (table[index] != null) {
-            if (!isDeleted[index] && table[index].equals(key)) {
-                return index;
-            }
-            index = (h1 + i * h2) % capacity;
-            i++;
-        }
-        return -1;
-    }
-
-    public int getCollisions() {
-        return collisions;
-    }
-
-    public int getSize() {
-        return size;
+    private static int secondHash(String key, int tableSize) {
+        int hash = HashUtils.hash(key, tableSize);
+        return 97 - (hash % 97); // classic secondary hash, prime smaller than table size
     }
 }

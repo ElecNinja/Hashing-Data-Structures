@@ -22,7 +22,10 @@ public class linkedlist {
     public void display() {
         Node temp = head;
         while (temp != null) {
-            System.out.print(temp.data + " ");
+            System.out.print(temp.data);
+            if (temp.next != null) {
+                System.out.print(" -> ");
+            }
             temp = temp.next;
         }
     }
@@ -35,5 +38,8 @@ public class linkedlist {
             temp = temp.next;
         }
         return count;
+    }
+    public boolean isEmpty() {
+        return head == null;
     }
 }

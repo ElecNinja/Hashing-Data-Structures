@@ -1,8 +1,8 @@
 
 public class SeparateChaining {
-    private linkedlist[] table;
-    private int size;
-    private int collisionCount;
+    final linkedlist[] table;
+    private final int size;
+    int collisionCount = 0;
 
     public SeparateChaining(int size) {
         this.size = size;
@@ -10,20 +10,15 @@ public class SeparateChaining {
 
         for (int i = 0; i < size; i++) {
             table[i] = new linkedlist();
-
-
         }
     }
         public void insert(String key){
             int i = HashUtils.hash(key, size);
-            table[i].insertAtEnd(key);
-            if (table[i].count() > 0) {
+            if(!table[i].isEmpty()){
                 collisionCount++;
             }
-
             table[i].insertAtEnd(key);
         }
-
     public int getCollisionCount () {
         return collisionCount;
     }
