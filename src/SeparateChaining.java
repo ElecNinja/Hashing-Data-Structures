@@ -1,9 +1,9 @@
 
-public class SeparateChainingHashTable {
+public class SeparateChaining {
         private linkedlist[] table;
         private int size;
 
-        public SeparateChainingHashTable(int size) {
+        public SeparateChaining(int size) {
             this.size = size;
             table = new linkedlist[size];
             for (int i = 0; i < size; i++) {
